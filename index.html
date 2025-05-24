@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chats - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body class="light-mode has-bottomnav">
+    <div id="app">
+        <!-- Header Section with Search -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Chats</h1>
+                <nav class="header-actions" aria-label="Chat Menu">
+                    <button id="search-btn" class="icon-btn" aria-label="Search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </button>
+                    <button id="new-chat-btn" class="icon-btn" aria-label="New chat">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <button id="chat-menu-btn" class="icon-btn" aria-label="More options">
+                        <i class="fas fa-ellipsis-vertical" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+            <!-- Search Bar (Hidden by default) -->
+            <div id="search-bar" class="search-bar hidden">
+                <div class="search-input-container">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="chat-search" placeholder="Search chats..." aria-label="Search chats" />
+                    <button id="clear-search" class="clear-btn" aria-label="Clear search">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content - Chat List -->
+        <main>
+            <div class="empty-state" id="empty-chats-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-comment-slash" aria-hidden="true"></i>
+                </div>
+                <h2>No Chats Yet</h2>
+                <p>Start a conversation with an AI character</p>
+                <button id="start-chat-btn" class="primary-btn">Start a New Chat</button>
+            </div>
+
+            <ul class="chat-list" id="chat-list" role="list" aria-label="Your chats"></ul>
+
+            <!-- Chat List Item Template (will be cloned via JS) -->
+            <template id="chat-item-template">
+                <li class="chat-item" role="listitem">
+                    <a href="#" class="chat-link">
+                        <div class="avatar">
+                            <img src="" alt="Character avatar" />
+                            <span class="status-dot online" aria-hidden="true"></span>
+                        </div>
+                        <div class="chat-details">
+                            <div class="chat-top-line">
+                                <h2 class="chat-name"></h2>
+                                <span class="chat-time"></span>
+                            </div>
+                            <div class="chat-bottom-line">
+                                <p class="chat-preview"></p>
+                                <div class="chat-indicators">
+                                    <span class="message-status" aria-hidden="true">
+                                        <i class="fas fa-check-double"></i>
+                                    </span>
+                                    <span class="message-count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <button class="chat-swipe-btn delete-btn" aria-label="Delete chat">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <button class="chat-swipe-btn archive-btn" aria-label="Archive chat">
+                        <i class="fas fa-archive" aria-hidden="true"></i>
+                    </button>
+                </li>
+            </template>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="nav-item active" aria-current="page">
+                <i class="fas fa-comment" aria-hidden="true"></i>
+                <span>Chats</span>
+            </a>
+            <a href="character.html" class="nav-item">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <span>Characters</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-gear" aria-hidden="true"></i>
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Popup Menu (Hidden by default) -->
+        <div id="chat-menu" class="popup-menu hidden" role="menu" aria-label="Chat options">
+            <ul role="menuitem">
+                <li id="clear-all-chats"><i class="fas fa-trash-alt" aria-hidden="true"></i> Clear All Chats</li>
+                <li id="archive-chats"><i class="fas fa-archive" aria-hidden="true"></i> Archived Chats</li>
+                <li id="import-export"><i class="fas fa-file-export" aria-hidden="true"></i> Import/Export</li>
+                <li id="dark-mode-toggle-menu"><i class="fas fa-moon" aria-hidden="true"></i> Dark Mode</li>
+                <li id="close-chat-menu"><i class="fas fa-times" aria-hidden="true"></i> Close</li>
+            </ul>
+        </div>
+
+        <!-- Import/Export Modal (Hidden by default) -->
+        <div id="import-export-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="import-export-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="import-export-title">Import/Export Chats</h3>
+                    <button id="close-import-export-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="button-group">
+                        <button id="export-json-btn" class="primary-btn">
+                            <i class="fas fa-file-export" aria-hidden="true"></i> Export as JSON
+                        </button>
+                        <button id="export-txt-btn" class="primary-btn">
+                            <i class="fas fa-file-alt" aria-hidden="true"></i> Export as Text
+                        </button>
+                    </div>
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="import-container">
+                        <label for="import-file" class="file-input-label">
+                            <i class="fas fa-file-import" aria-hidden="true"></i>
+                            <span>Import from File</span>
+                        </label>
+                        <input type="file" id="import-file" accept=".json,.txt" hidden />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal (Hidden by default) -->
+        <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="confirm-title">Confirmation</h3>
+                    <button id="close-confirm-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <p id="confirm-message">Are you sure you want to perform this action?</p>
+                </div>
+                <footer class="modal-footer">
+                    <button id="confirm-cancel" class="secondary-btn">Cancel</button>
+                    <button id="confirm-ok" class="danger-btn">Confirm</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Loading Overlay (Hidden by default) -->
+        <div id="loading-overlay" class="overlay hidden" aria-hidden="true">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Notification Toast (Hidden by default) -->
+        <div id="notification-toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/audio.js"></script>
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

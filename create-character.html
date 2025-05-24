@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Character - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body class="light-mode">
+    <div id="app">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="back-btn-container">
+                    <button id="back-btn" class="icon-btn back-btn" aria-label="Back to characters">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <h1 id="page-title">Create Character</h1>
+                <nav class="header-actions" aria-label="Help">
+                    <button id="help-btn" class="icon-btn" aria-label="Help">
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <section class="create-character-container">
+                <form id="create-character-form">
+                    <!-- Character Information Section -->
+                    <div class="form-section">
+                        <h2>Basic Information</h2>
+                        
+                        <div class="character-avatar-selection">
+                            <div class="avatar-upload large">
+                                <div class="avatar-preview xl">
+                                    <img src="https://ui-avatars.com/api/?name=AI&background=random" alt="Character Avatar" id="character-avatar-preview" />
+                                </div>
+                                <label for="character-avatar-upload" class="avatar-edit-btn" aria-label="Edit avatar">
+                                    <i class="fas fa-camera" aria-hidden="true"></i>
+                                </label>
+                                <input type="file" id="character-avatar-upload" accept="image/*" hidden />
+                            </div>
+                            
+                            <div class="avatar-gallery-toggle">
+                                <button type="button" id="show-avatar-gallery" class="secondary-btn">
+                                    <i class="fas fa-images" aria-hidden="true"></i>
+                                    Choose from Gallery
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-name">Character Name</label>
+                            <input type="text" id="character-name" placeholder="Enter character name" required />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-short-description">Short Description</label>
+                            <input type="text" id="character-short-description" placeholder="Brief description (displayed in character list)" maxlength="100" required />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-full-description">Full Description</label>
+                            <textarea id="character-full-description" rows="3" placeholder="Detailed description about your character" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-categories">Categories</label>
+                            <div class="checkbox-group" role="group" aria-label="Character categories">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="categories" value="roleplay" />
+                                    <span>Roleplay</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="categories" value="assistant" />
+                                    <span>Assistant</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="categories" value="companion" />
+                                    <span>Companion</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="categories" value="historical" />
+                                    <span>Historical</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="categories" value="fictional" />
+                                    <span>Fictional</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-tags-input">Tags</label>
+                            <div class="tags-input">
+                                <div class="tags-container" id="character-tags"></div>
+                                <input type="text" id="character-tags-input" placeholder="Add a tag and press Enter" />
+                            </div>
+                            <small>Tags help users find your character. Add 3-7 relevant tags.</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Character Personality Section -->
+                    <div class="form-section">
+                        <h2>Personality & Behavior</h2>
+                        
+                        <div class="form-group">
+                            <label for="character-personality">Personality</label>
+                            <textarea id="character-personality" rows="3" placeholder="Describe the character's personality traits, behavior patterns, likes, dislikes, etc." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-voice">Voice & Speech Style</label>
+                            <textarea id="character-voice" rows="2" placeholder="How does your character speak? Formal, casual, unique phrases, accents, etc."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="character-scenario">Scenario / World</label>
+                            <textarea id="character-scenario" rows="2" placeholder="The setting or world your character exists in (optional)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="greeting-message">Greeting Message</label>
+                            <textarea id="greeting-message" rows="2" placeholder="How your character will greet users on first interaction" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Example Dialogue</label>
+                            <p class="helper-text">Add example conversations to help the AI understand how your character should respond.</p>
+                            
+                            <div id="dialogue-examples">
+                                <div class="dialogue-example">
+                                    <div class="dialogue-row">
+                                        <label>User:</label>
+                                        <input type="text" class="dialogue-user" placeholder="Example user message" />
+                                    </div>
+                                    <div class="dialogue-row">
+                                        <label>Character:</label>
+                                        <input type="text" class="dialogue-character" placeholder="Example character response" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="add-dialogue-example" class="secondary-btn">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                                Add Example
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Settings Section -->
+                    <div class="form-section">
+                        <h2>Advanced Settings</h2>
+                        
+                        <div class="form-group">
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <i class="fas fa-share-alt" aria-hidden="true"></i>
+                                    <label for="character-visibility">Character Visibility</label>
+                                </div>
+                                <div class="setting-control">
+                                    <select id="character-visibility">
+                                        <option value="private">Private (Only You)</option>
+                                        <option value="public">Public (Everyone)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                                    <label for="character-nsfw">NSFW Content</label>
+                                </div>
+                                <div class="setting-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="character-nsfw" />
+                                        <span class="slider round" aria-hidden="true"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <small>Mark this character as containing mature or adult themes.</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="setting-item">
+                                <div class="setting-label">
+                                    <i class="fas fa-microchip" aria-hidden="true"></i>
+                                    <label for="character-model">Preferred AI Model</label>
+                                </div>
+                                <div class="setting-control">
+                                    <select id="character-model">
+                                        <option value="default">Default (System Setting)</option>
+                                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                        <option value="gpt-4">GPT-4</option>
+                                        <option value="claude-3-opus">Claude 3 Opus</option>
+                                        <option value="llama-3">Llama 3</option>
+                                        <option value="tinny-llama">Tiny Llama</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-character" class="secondary-btn">Cancel</button>
+                        <button type="submit" id="save-character" class="primary-btn">Create Character</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- Avatar Gallery Modal -->
+        <div id="avatar-gallery-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="avatar-gallery-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="avatar-gallery-title">Choose Avatar</h3>
+                    <button id="close-avatar-gallery" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="avatar-gallery-tabs" role="tablist">
+                        <button class="tab-btn active" data-tab="premade" role="tab" aria-selected="true">Premade</button>
+                        <button class="tab-btn" data-tab="generated" role="tab" aria-selected="false">AI Generated</button>
+                    </div>
+                    
+                    <div id="premade-tab" class="avatar-gallery-tab active">
+                        <div class="avatar-grid" id="premade-avatars">
+                            <!-- Premade avatars will be added here via JS -->
+                        </div>
+                    </div>
+                    
+                    <div id="generated-tab" class="avatar-gallery-tab">
+                        <div class="generate-avatar-form">
+                            <div class="form-group">
+                                <label for="avatar-prompt">Describe the character</label>
+                                <textarea id="avatar-prompt" rows="2" placeholder="E.g., a friendly wizard with a blue hat and long white beard"></textarea>
+                            </div>
+                            <button type="button" id="generate-avatar-btn" class="primary-btn">
+                                <i class="fas fa-robot" aria-hidden="true"></i>
+                                Generate Avatar
+                            </button>
+                        </div>
+                        <div class="avatar-grid" id="generated-avatars">
+                            <!-- Generated avatars will be added here via JS -->
+                        </div>
+                    </div>
+                </div>
+                <footer class="modal-footer">
+                    <button id="select-avatar-btn" class="primary-btn" disabled>Select Avatar</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="character-help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="character-help-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="character-help-title">Character Creation Help</h3>
+                    <button id="close-character-help" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="help-section">
+                        <h4>Basic Information</h4>
+                        <p>Start by giving your character a name, description, and visual appearance. The short description will appear in the character list, while the full description provides more details.</p>
+                        <p>Choose relevant categories and add tags to help others find your character.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>Personality & Behavior</h4>
+                        <p>Define your character's personality, speech patterns, and the world they inhabit.</p>
+                        <p>Add example dialogues to help the AI understand how your character should respond in different situations. More examples lead to better character consistency.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>Advanced Settings</h4>
+                        <p>Set your character's visibility to private if you want to keep it for personal use only.</p>
+                        <p>Mark adult content appropriately with the NSFW toggle.</p>
+                        <p>Select a preferred AI model for optimal character performance.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>Tips for Good Characters</h4>
+                        <ul>
+                            <li>Be detailed in personality descriptions</li>
+                            <li>Provide diverse example dialogues</li>
+                            <li>Give your character distinctive speech patterns</li>
+                            <li>Describe how they react to different situations</li>
+                            <li>Include likes, dislikes, motivations, and goals</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="overlay hidden" aria-hidden="true">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="notification-toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/create-character.js"></script>
+</body>
+</html>

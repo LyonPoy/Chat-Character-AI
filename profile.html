@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
+</head>
+<body class="light-mode profile-page">
+    <div id="app">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Profile</h1>
+                <nav class="header-actions" aria-label="Profile Menu">
+                    <button id="profile-menu-btn" class="icon-btn" aria-label="Open profile menu">
+                        <i class="fas fa-ellipsis-vertical" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Profile Section -->
+            <section class="profile-section">
+                <div class="profile-header">
+                    <div class="avatar-upload large">
+                        <div class="avatar-preview xl">
+                            <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar" id="user-avatar" />
+                        </div>
+                        <label for="profile-avatar-upload" class="avatar-edit-btn" aria-label="Edit avatar">
+                            <i class="fas fa-camera" aria-hidden="true"></i>
+                        </label>
+                        <input type="file" id="profile-avatar-upload" accept="image/*" hidden />
+                    </div>
+                    <h2 id="user-name">User Name</h2>
+                </div>
+
+                <div class="profile-stats" role="group" aria-label="User Statistics">
+                    <div class="stat-item">
+                        <span class="stat-value" id="chat-count">0</span>
+                        <span class="stat-label">Chats</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="character-count">0</span>
+                        <span class="stat-label">Characters</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="message-count">0</span>
+                        <span class="stat-label">Messages</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Form Section -->
+            <section class="profile-form">
+                <h3>Your Information</h3>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="display-name">Your Name</label>
+                        <input type="text" id="display-name" placeholder="Your name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pronouns">Your Pronouns (Optional)</label>
+                        <select id="pronouns">
+                            <option value="">Prefer not to say</option>
+                            <option value="he">He/Him</option>
+                            <option value="she">She/Her</option>
+                            <option value="they">They/Them</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-bio">Tell the AI Character About You!</label>
+                        <textarea id="user-bio" rows="3" placeholder="Share anything you'd like the AI to know about you. Your interests, hobbies, what you're looking for, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <span>Your Gender (Optional)</span>
+                        <div class="radio-group" role="radiogroup">
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="male" />
+                                <span>Male</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="female" />
+                                <span>Female</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="other" />
+                                <span>Other</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth-date">Your Birthday (Optional)</label>
+                        <input type="date" id="birth-date" />
+                        <small>This can help the AI wish you a happy birthday!</small>
+                    </div>
+
+                    <h3>Your Preferences for AI Interaction</h3>
+
+                    <div class="form-group">
+                        <label for="communication-style">Preferred Communication Style</label>
+                        <select id="communication-style">
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="professional">Professional</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-length">Preferred Message Length from AI</label>
+                        <select id="message-length">
+                            <option value="short">Short & Concise</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="long">Long & Detailed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interests-input">Your Interests</label>
+                        <div class="tags-input">
+                            <div class="tags-container" id="interests-tags"></div>
+                            <input type="text" id="interests-input" placeholder="Add an interest and press Enter" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goals">Your Goals for Using This AI (Optional)</label>
+                        <textarea id="goals" rows="2" placeholder="e.g., Learn new things, have fun, get advice"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avoid">Topics to Avoid (Optional)</label>
+                        <textarea id="avoid" rows="2" placeholder="e.g., Politics, certain personal topics"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button id="save-profile" class="primary-btn" type="submit">Save Profile</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Profile Account Section -->
+            <section class="profile-account">
+                <h3>Account</h3>
+                <div class="account-item">
+                    <div class="account-label">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        <span>Privacy</span>
+                    </div>
+                    <div class="account-value">
+                        <button id="privacy-settings-btn" class="text-btn">Manage</button>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-label">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        <span>Sign Out</span>
+                    </div>
+                    <div class="account-value">
+                        <button id="sign-out-btn" class="text-btn">Sign Out</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Profile Menu -->
+        <div id="profile-menu" class="popup-menu hidden" role="menu" aria-label="Profile Menu">
+            <ul role="menuitem">
+                <li id="export-all-data"><i class="fas fa-file-export" aria-hidden="true"></i> Export All Data</li>
+                <li id="dark-mode-toggle-menu"><i class="fas fa-moon" aria-hidden="true"></i> Dark Mode</li>
+                <li id="delete-account" class="danger"><i class="fas fa-user-slash" aria-hidden="true"></i> Delete Account</li>
+                <li id="close-profile-menu"><i class="fas fa-times" aria-hidden="true"></i> Close</li>
+            </ul>
+        </div>
+
+        <!-- Privacy Modal -->
+        <div id="privacy-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="privacy-modal-title">Privacy Settings</h3>
+                    <button id="close-privacy-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="setting-toggle">
+                        <label for="share-usage-data">Share Usage Data</label>
+                        <label class="switch">
+                            <input type="checkbox" id="share-usage-data" checked />
+                            <span class="slider round" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <div class="setting-toggle">
+                        <label for="allow-notifications">Allow Notifications</label>
+                        <label class="switch">
+                            <input type="checkbox" id="allow-notifications" />
+                            <span class="slider round" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <div class="setting-toggle">
+                        <label for="show-online-status">Show Online Status</label>
+                        <label class="switch">
+                            <input type="checkbox" id="show-online-status" checked />
+                            <span class="slider round" aria-hidden="true"></span>
+                        </label>
+                    </div>
+                    <div class="setting-toggle">
+                        <label for="dark-mode-toggle">Dark Mode</label>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button id="save-privacy-settings" class="primary-btn">Save Settings</button>
+                    <button id="cancel-privacy-modal" class="secondary-btn">Cancel</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-comment" aria-hidden="true"></i>
+                <span>Chats</span>
+            </a>
+            <a href="character.html" class="nav-item">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <span>Characters</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-gear" aria-hidden="true"></i>
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-item active" aria-current="page">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/profile.js"></script>
+</body>
+</html>

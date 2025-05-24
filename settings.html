@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <title>Settings - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+</head>
+
+<body class="light-mode settings-page">
+
+    <div id="app">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Settings</h1>
+                <nav class="header-actions" aria-label="Help">
+                    <button id="settings-help-btn" class="icon-btn" aria-label="Help">
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+        <!-- Tab Navigation -->
+        <nav class="tab-menu" role="tablist">
+            <button class="tab-btn active" data-tab="general" role="tab" aria-selected="true">General</button>
+            <button class="tab-btn" data-tab="appearance" role="tab" aria-selected="false">Appearance</button>
+            <button class="tab-btn" data-tab="audio" role="tab" aria-selected="false">Audio</button>
+        </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <div id="settings-container" class="settings-container" role="tabpanel">
+                <!-- General Settings Section -->
+                <section id="general" class="settings-section active" role="region" aria-labelledby="general-heading">
+                    <h2 id="general-heading" class="sr-only">General Settings</h2>
+
+                    <div class="settings-group">
+                        <h3>Application</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-globe" aria-hidden="true"></i>
+                                <label for="language-select">Language</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="language-select" aria-label="Select language">
+                                    <option value="en">English</option>
+                                    <option value="id">Indonesian</option>
+                                    <option value="ja">Japanese</option>
+                                    <option value="zh">Chinese</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-hand-pointer" aria-hidden="true"></i>
+                                <label for="swipe-gestures">Swipe Gestures</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="swipe-gestures" checked />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-compact-disc" aria-hidden="true"></i>
+                                <label for="animations">Animations</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="animations" checked />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                  <h3>AI Model Settings</h3>
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-microchip" aria-hidden="true"></i>
+                      <label for="default-model">PILIH MODEL</label>
+                    </div>
+                    <div class="setting-control">
+                      <select id="default-model" aria-label="Select default AI model">
+                        <optgroup label="Model Custom">
+                          <option value="albert-base-v2">Albert Base V2</option>
+                          <option value="bert-tinny">Bert Tinny</option>
+                          <option value="distilbert-base-uncased">DistilBERT</option>
+                          <option value="distil-gpt-2">Distil GPT-2</option>
+                          <option value="electra-small">Electra Small</option>
+                          <option value="gpt-2">GPT-2</option>
+                          <option value="gpt-neo">GPT-Neo</option>
+                          <option value="gpt-2-tinny">Gpt Tinny</option>
+                          <option value="pythia">Pythia</option>
+                          <option value="t5-small">T5 Translator</option>
+                          <option value="tinny-llama">Tiny Llama</option>
+                        </optgroup>
+                        <optgroup label="OpenRouter Models">
+                          <option value="claude-haiku">Claude Haiku</option>
+                          <option value="gpt-4o">GPT-4o</option>
+                          <option value="llama3-70b">Llama 3 70B</option>
+                        </optgroup>
+                        <optgroup label="OpenAI Models">
+                          <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                          <option value="gpt-4o">GPT-4o</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-temperature-high" aria-hidden="true"></i>
+                      <label for="temperature-slider">Temperature</label>
+                    </div>
+                    <div class="setting-control">
+                      <input type="range" id="temperature-slider" min="0" max="1" step="0.1" value="0.7" />
+                      <span id="temperature-value">0.7</span>
+                    </div>
+                  </div>
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-text-width" aria-hidden="true"></i>
+                      <label for="max-tokens">Max Response Length</label>
+                    </div>
+                    <div class="setting-control">
+                      <select id="max-tokens" aria-label="Select maximum response length">
+                        <option value="500">Short</option>
+                        <option value="1000" selected>Medium</option>
+                        <option value="2000">Long</option>
+                        <option value="4000">Very Long</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-random" aria-hidden="true"></i>
+                      <label for="fallback-toggle">Enable Model Fallback</label>
+                    </div>
+                    <div class="setting-control">
+                      <label class="switch">
+                        <input type="checkbox" id="fallback-toggle" checked />
+                        <span class="slider round" aria-hidden="true"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="settings-group">
+                  <h3>API Keys</h3>
+                  
+                  <!-- OpenRouter API Key -->
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-key" aria-hidden="true"></i>
+                      <label for="openrouter-api-key">OpenRouter API Key</label>
+                    </div>
+                    <div class="setting-control">
+                      <input type="password" id="openrouter-api-key" placeholder="Default key is already provided" />
+                      <button id="save-openrouter-key" class="small-btn">Save</button>
+                    </div>
+                  </div>
+                  
+                  <!-- OpenAI API Key -->
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-key" aria-hidden="true"></i>
+                      <label for="openai-api-key">OpenAI API Key</label>
+                    </div>
+                    <div class="setting-control">
+                      <input type="password" id="openai-api-key" placeholder="Enter your OpenAI API key" />
+                      <button id="save-openai-key" class="small-btn">Save</button>
+                    </div>
+                  </div>
+                  
+                  <!-- ElevenLabs API Key -->
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-key" aria-hidden="true"></i>
+                      <label for="elevenlabs-api-key">ElevenLabs API Key (TTS)</label>
+                    </div>
+                    <div class="setting-control">
+                      <input type="password" id="elevenlabs-api-key" placeholder="Enter your ElevenLabs API key" />
+                      <button id="save-elevenlabs-key" class="small-btn">Save</button>
+                    </div>
+                  </div>
+                  
+                  <!-- Google Translate API Key -->
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-key" aria-hidden="true"></i>
+                      <label for="google-translate-api-key">Google Translate API Key</label>
+                    </div>
+                    <div class="setting-control">
+                      <input type="password" id="google-translate-api-key" placeholder="Enter your Google Translate API key" />
+                      <button id="save-google-translate-key" class="small-btn">Save</button>
+                    </div>
+                  </div>
+                  
+                  <!-- Translation Settings -->
+                  <div class="setting-item">
+                    <div class="setting-label">
+                      <i class="fas fa-language" aria-hidden="true"></i>
+                      <label for="translation-service">Translation Service</label>
+                    </div>
+                    <div class="setting-control">
+                      <select id="translation-service" aria-label="Select translation service">
+                        <option value="libretranslate" selected>LibreTranslate (Free)</option>
+                        <option value="google">Google Translate</option>
+                        <option value="deepl">DeepL</option>
+                        <option value="microsoft">Microsoft Translator</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                    <div class="settings-group">
+                        <h3>Content</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                                <label for="nsfw-toggle-global">NSFW Content</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="nsfw-toggle-global" />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                <label for="safety-level">Safety Filters</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="safety-level" aria-label="Select safety filter level">
+                                    <option value="high">High</option>
+                                    <option value="medium" selected>Moderate</option>
+                                    <option value="low">Low</option>
+                                    <option value="off">Off</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Appearance Settings Section -->
+                <section id="appearance" class="settings-section" role="region" aria-labelledby="appearance-heading">
+                    <h2 id="appearance-heading" class="sr-only">Appearance Settings</h2>
+
+                    <div class="settings-group">
+                        <h3>Theme</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-moon" aria-hidden="true"></i>
+                                <label for="dark-mode-toggle">Dark Mode</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="dark-mode-toggle" />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="theme-select">
+                            <h4>Color Theme</h4>
+                            <div class="theme-options" role="group" aria-label="Color Themes">
+                                <div class="theme-option active" data-theme="default">
+                                    <div class="theme-preview" style="background: linear-gradient(135deg, #25D366, #128C7E);"></div>
+                                    <span>Default</span>
+                                </div>
+                                <div class="theme-option" data-theme="blue">
+                                    <div class="theme-preview" style="background: linear-gradient(135deg, #4F8EF7, #1A56DB);"></div>
+                                    <span>Blue</span>
+                                </div>
+                                <div class="theme-option" data-theme="purple">
+                                    <div class="theme-preview" style="background: linear-gradient(135deg, #A78BFA, #7C3AED);"></div>
+                                    <span>Purple</span>
+                                </div>
+                                <div class="theme-option" data-theme="pink">
+                                    <div class="theme-preview" style="background: linear-gradient(135deg, #EC4899, #BE185D);"></div>
+                                    <span>Pink</span>
+                                </div>
+                                <div class="theme-option" data-theme="custom">
+                                    <div class="theme-preview custom-theme">
+                                        <i class="fas fa-plus" aria-hidden="true"></i>
+                                    </div>
+                                    <span>Custom</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="custom-theme-section" class="setting-item hidden">
+                            <div class="color-picker-group">
+                                <label for="primary-color">Primary Color</label>
+                                <input type="color" id="primary-color" value="#25D366" />
+                            </div>
+                            <div class="color-picker-group">
+                                <label for="secondary-color">Secondary Color</label>
+                                <input type="color" id="secondary-color" value="#128C7E" />
+                            </div>
+                            <button id="apply-custom-theme" class="primary-btn">Apply Custom Theme</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Display</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-text-height" aria-hidden="true"></i>
+                                <label for="font-size">Font Size</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="font-size" aria-label="Select font size">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                    <option value="x-large">Extra Large</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-image" aria-hidden="true"></i>
+                                <label for="chat-background">Chat Background</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="chat-background" aria-label="Select chat background">
+                                    <option value="default">Default</option>
+                                    <option value="solid">Solid Color</option>
+                                    <option value="gradient">Gradient</option>
+                                    <option value="pattern1">Pattern 1</option>
+                                    <option value="pattern2">Pattern 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-align-left" aria-hidden="true"></i>
+                                <label for="message-alignment">Message Alignment</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="message-alignment" aria-label="Select message alignment">
+                                    <option value="standard" selected>Standard</option>
+                                    <option value="compact">Compact</option>
+                                    <option value="centered">Centered</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Audio Settings Section -->
+                <section id="audio" class="settings-section" role="region" aria-labelledby="audio-heading">
+                    <h2 id="audio-heading" class="sr-only">Audio Settings</h2>
+
+                    <div class="settings-group">
+                        <h3>Text-to-Speech</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-volume-up" aria-hidden="true"></i>
+                                <label for="tts-toggle">Enable TTS</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="tts-toggle" checked />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-microphone" aria-hidden="true"></i>
+                                <label for="tts-voice">Voice</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="tts-voice" aria-label="Select TTS voice">
+                                    <option value="default">Device Default</option>
+                                    <optgroup label="English">
+                                        <option value="en-US-female">English (US) - Female</option>
+                                        <option value="en-US-male">English (US) - Male</option>
+                                        <option value="en-GB-female">English (UK) - Female</option>
+                                        <option value="en-GB-male">English (UK) - Male</option>
+                                    </optgroup>
+                                    <optgroup label="Indonesian">
+                                        <option value="id-ID-female">Indonesian - Female</option>
+                                        <option value="id-ID-male">Indonesian - Male</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                                <label for="tts-speed">Speed</label>
+                            </div>
+                            <div class="setting-control range-control">
+                                <input type="range" id="tts-speed" min="0.5" max="2" step="0.1" value="1" />
+                                <span id="tts-speed-value" class="range-value">Normal</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-volume-down" aria-hidden="true"></i>
+                                <label for="tts-volume">Volume</label>
+                            </div>
+                            <div class="setting-control range-control">
+                                <input type="range" id="tts-volume" min="0" max="1" step="0.1" value="0.8" />
+                                <span id="tts-volume-value" class="range-value">80%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Sound Effects</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-bell" aria-hidden="true"></i>
+                                <label for="sfx-toggle">Enable SFX</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="sfx-toggle" checked />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-volume-down" aria-hidden="true"></i>
+                                <label for="sfx-volume">Volume</label>
+                            </div>
+                            <div class="setting-control range-control">
+                                <input type="range" id="sfx-volume" min="0" max="1" step="0.1" value="0.5" />
+                                <span id="sfx-volume-value" class="range-value">50%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Background Music</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-music" aria-hidden="true"></i>
+                                <label for="bgm-toggle">Enable BGM</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="bgm-toggle" />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-compact-disc" aria-hidden="true"></i>
+                                <label for="bgm-track">Music Track</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="bgm-track" aria-label="Select background music track">
+                                    <option value="ambient">Ambient</option>
+                                    <option value="lofi">Lo-Fi</option>
+                                    <option value="classical">Classical</option>
+                                    <option value="nature">Nature Sounds</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-volume-down" aria-hidden="true"></i>
+                                <label for="bgm-volume">Volume</label>
+                            </div>
+                            <div class="setting-control range-control">
+                                <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3" />
+                                <span id="bgm-volume-value" class="range-value">30%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Help Modal -->
+        <div id="help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="help-title">Settings Help</h3>
+                    <button id="close-help-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="help-section">
+                        <h4>General Settings</h4>
+                        <p>Configure app language, gestures, and animations to personalize your experience.</p>
+                        <p>AI settings let you choose your preferred model and set up API keys for external LLMs.</p>
+                        <p>Content settings control safety filters and NSFW content visibility.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>Appearance Settings</h4>
+                        <p>Customize the app's look with dark mode, color themes, and display options.</p>
+                        <p>Create your own custom theme by selecting primary and secondary colors.</p>
+                    </div>
+                    
+                    <div class="help-section">
+                        <h4>Audio Settings</h4>
+                        <p>Configure text-to-speech settings for character responses.</p>
+                        <p>Adjust sound effects and background music to enhance your chat experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-comment" aria-hidden="true"></i>
+                <span>Chats</span>
+            </a>
+            <a href="character.html" class="nav-item">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <span>Characters</span>
+            </a>
+            <a href="settings.html" class="nav-item active" aria-current="page">
+                <i class="fas fa-gear" aria-hidden="true"></i>
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="overlay hidden" aria-hidden="true">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="notification-toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/audio.js"></script>
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

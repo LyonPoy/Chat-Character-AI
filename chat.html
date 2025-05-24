@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body class="light-mode chat-page">
+    <div id="app">
+        <!-- Chat Header Section -->
+        <header class="header chat-header">
+            <div class="header-content">
+                <div class="back-btn-container">
+                    <button id="back-btn" class="icon-btn back-btn" aria-label="Back to chats">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="character-info" id="character-info">
+                    <div class="avatar">
+                        <img id="character-avatar" src="" alt="Character avatar" />
+                        <span class="status-dot online" aria-hidden="true"></span>
+                    </div>
+                    <div class="info-text">
+                        <h2 id="character-name"></h2>
+                        <p id="typing-indicator" class="typing-indicator hidden">typing...</p>
+                    </div>
+                </div>
+                <nav class="header-actions" aria-label="Chat actions">
+                    <button id="call-btn" class="icon-btn" aria-label="Call character">
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                    </button>
+                    <button id="chat-menu-btn" class="icon-btn" aria-label="More options">
+                        <i class="fas fa-ellipsis-vertical" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <div id="chat-background" class="chat-background"></div>
+            
+            <!-- Date Divider -->
+            <div class="date-divider">
+                <span id="chat-date">Today</span>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="chat-messages"></div>
+            
+            <!-- Message Templates -->
+            <template id="outgoing-message-template">
+                <div class="message-group outgoing">
+                    <div class="message">
+                        <div class="message-content"></div>
+                        <div class="message-info">
+                            <span class="message-time"></span>
+                            <span class="message-status">
+                                <i class="fas fa-check-double" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            
+            <template id="incoming-message-template">
+                <div class="message-group incoming">
+                    <div class="avatar">
+                        <img src="" alt="Character avatar" />
+                    </div>
+                    <div class="message">
+                        <div class="message-content"></div>
+                        <div class="message-info">
+                            <span class="message-time"></span>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            
+            <template id="system-message-template">
+                <div class="system-message">
+                    <div class="system-message-content"></div>
+                </div>
+            </template>
+        </main>
+
+        <!-- Chat Input Section -->
+        <footer class="chat-input-container">
+            <div class="chat-input-actions">
+                <button id="emoji-btn" class="action-icon-btn" aria-label="Insert emoji">
+                    <i class="far fa-smile" aria-hidden="true"></i>
+                </button>
+                <button id="attach-btn" class="action-icon-btn" aria-label="Attach file">
+                    <i class="fas fa-paperclip" aria-hidden="true"></i>
+                </button>
+            </div>
+            
+            <div class="chat-input-field">
+                <textarea id="message-input" placeholder="Type a message..." aria-label="Type a message" rows="1"></textarea>
+            </div>
+            
+            <div class="chat-send-container">
+                <button id="voice-input-btn" class="action-icon-btn" aria-label="Voice input">
+                    <i class="fas fa-microphone" aria-hidden="true"></i>
+                </button>
+                <button id="send-message-btn" class="send-btn" aria-label="Send message">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </div>
+        </footer>
+
+        <!-- Quick Reply Section (Hidden by default) -->
+        <div id="quick-reply-container" class="quick-reply-container hidden">
+            <div class="quick-reply-header">
+                <h3>Quick Replies</h3>
+                <button id="close-quick-reply" class="close-btn" aria-label="Close quick replies">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="quick-reply-list" id="quick-reply-list">
+                <!-- Quick replies will be added here via JS -->
+            </div>
+        </div>
+
+        <!-- Emoji Picker (Hidden by default) -->
+        <div id="emoji-picker" class="emoji-picker hidden">
+            <div class="emoji-picker-header">
+                <div class="emoji-categories">
+                    <button class="emoji-category active" data-category="recent">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="smileys">
+                        <i class="far fa-smile" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="animals">
+                        <i class="fas fa-paw" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="food">
+                        <i class="fas fa-pizza-slice" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="activities">
+                        <i class="fas fa-futbol" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="objects">
+                        <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                    </button>
+                    <button class="emoji-category" data-category="symbols">
+                        <i class="fas fa-heart" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <button id="close-emoji-picker" class="close-btn" aria-label="Close emoji picker">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="emoji-grid" id="emoji-grid">
+                <!-- Emojis will be added here via JS -->
+            </div>
+        </div>
+
+        <!-- Voice Recording UI (Hidden by default) -->
+        <div id="voice-recording-ui" class="voice-recording-ui hidden">
+            <div class="recording-indicator">
+                <div class="recording-pulse"></div>
+                <i class="fas fa-microphone" aria-hidden="true"></i>
+            </div>
+            <div class="recording-time" id="recording-time">00:00</div>
+            <div class="recording-actions">
+                <button id="cancel-recording" class="recording-btn cancel" aria-label="Cancel recording">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+                <button id="stop-recording" class="recording-btn stop" aria-label="Stop recording">
+                    <i class="fas fa-stop" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Call Modal (Hidden by default) -->
+        <div id="call-modal" class="modal call-modal hidden" role="dialog" aria-modal="true" aria-labelledby="call-title">
+            <div class="modal-content call-content">
+                <div class="call-header">
+                    <h3 id="call-title">Calling...</h3>
+                    <p id="call-status">Connecting to character</p>
+                </div>
+                <div class="call-avatar">
+                    <img id="call-avatar" src="" alt="Character avatar" />
+                </div>
+                <div class="call-controls">
+                    <button id="end-call" class="call-btn end-call" aria-label="End call">
+                        <i class="fas fa-phone-slash" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Menu (Hidden by default) -->
+        <div id="chat-options-menu" class="popup-menu hidden" role="menu" aria-label="Chat options">
+            <ul role="menuitem">
+                <li id="view-character-info"><i class="fas fa-info-circle" aria-hidden="true"></i> Character Info</li>
+                <li id="chat-settings"><i class="fas fa-cog" aria-hidden="true"></i> Chat Settings</li>
+                <li id="clear-conversation"><i class="fas fa-trash" aria-hidden="true"></i> Clear Conversation</li>
+                <li id="export-chat"><i class="fas fa-file-export" aria-hidden="true"></i> Export Chat</li>
+                <li id="select-messages"><i class="fas fa-check-square" aria-hidden="true"></i> Select Messages</li>
+                <li id="dark-mode-toggle-menu"><i class="fas fa-moon" aria-hidden="true"></i> Dark Mode</li>
+                <li id="close-chat-menu"><i class="fas fa-times" aria-hidden="true"></i> Close</li>
+            </ul>
+        </div>
+
+        <!-- Character Info Modal (Hidden by default) -->
+        <div id="character-info-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="character-info-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="character-info-title">Character Information</h3>
+                    <button id="close-character-info" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="character-info-header">
+                        <div class="avatar large">
+                            <img id="info-avatar" src="" alt="Character avatar" />
+                        </div>
+                        <div class="character-info-details">
+                            <h2 id="info-name"></h2>
+                            <p id="info-creator"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>About</h4>
+                        <p id="info-description"></p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Personality</h4>
+                        <p id="info-personality"></p>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>Tags</h4>
+                        <div class="character-tags" id="info-tags">
+                            <!-- Tags will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Settings Modal (Hidden by default) -->
+        <div id="chat-settings-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="chat-settings-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="chat-settings-title">Chat Settings</h3>
+                    <button id="close-chat-settings" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <h4>Message Settings</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-clock" aria-hidden="true"></i>
+                                <label for="typing-delay">Typing Delay</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="typing-delay">
+                                    <option value="none">None</option>
+                                    <option value="fast">Fast</option>
+                                    <option value="realistic" selected>Realistic</option>
+                                    <option value="slow">Slow</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-align-left" aria-hidden="true"></i>
+                                <label for="message-length">Preferred Length</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="message-length">
+                                    <option value="short">Short</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="long">Long</option>
+                                    <option value="very-long">Very Long</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h4>Audio & Voice</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-volume-up" aria-hidden="true"></i>
+                                <label for="tts-toggle">Text-to-Speech</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="tts-toggle" />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-music" aria-hidden="true"></i>
+                                <label for="bgm-toggle">Background Music</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="bgm-toggle" />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-bell" aria-hidden="true"></i>
+                                <label for="sfx-toggle">Sound Effects</label>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="sfx-toggle" checked />
+                                    <span class="slider round" aria-hidden="true"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h4>Appearance</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <i class="fas fa-image" aria-hidden="true"></i>
+                                <label for="chat-wallpaper">Chat Wallpaper</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="chat-wallpaper">
+                                    <option value="default">Default</option>
+                                    <option value="solid">Solid Color</option>
+                                    <option value="gradient">Gradient</option>
+                                    <option value="pattern1">Pattern 1</option>
+                                    <option value="pattern2">Pattern 2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="modal-footer">
+                    <button id="save-chat-settings" class="primary-btn">Save Settings</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Message Selection Mode UI (Hidden by default) -->
+        <div id="selection-mode-ui" class="selection-mode-ui hidden">
+            <div class="selection-header">
+                <div class="selection-count">
+                    <span id="selected-count">0</span> selected
+                </div>
+                <div class="selection-actions">
+                    <button id="delete-selected" class="selection-btn" aria-label="Delete selected messages">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                    </button>
+                    <button id="copy-selected" class="selection-btn" aria-label="Copy selected messages">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                    </button>
+                    <button id="cancel-selection" class="selection-btn" aria-label="Cancel selection">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="overlay hidden" aria-hidden="true">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="notification-toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/audio.js"></script>
+    <script type="module" src="js/chat.js"></script>
+</body>
+</html>

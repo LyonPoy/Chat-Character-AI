@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Characters - AI Character Chat</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body class="light-mode has-bottomnav">
+    <div id="app">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Characters</h1>
+                <nav class="header-actions" aria-label="Character Menu">
+                    <button id="search-btn" class="icon-btn" aria-label="Search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </button>
+                    <button id="create-character-btn" class="icon-btn" aria-label="Create new character">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <button id="character-menu-btn" class="icon-btn" aria-label="More options">
+                        <i class="fas fa-ellipsis-vertical" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </div>
+            <!-- Tab Navigation -->
+            <nav class="tab-menu" role="tablist">
+                <button class="tab-btn active" data-tab="all" role="tab" aria-selected="true">All</button>
+                <button class="tab-btn" data-tab="popular" role="tab" aria-selected="false">Popular</button>
+                <button class="tab-btn" data-tab="recent" role="tab" aria-selected="false">Recent</button>
+                <button class="tab-btn" data-tab="mycharacters" role="tab" aria-selected="false">My Characters</button>
+            </nav>
+            <!-- Search Bar (Hidden by default) -->
+            <div id="search-bar" class="search-bar hidden">
+                <div class="search-input-container">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="character-search" placeholder="Search characters..." aria-label="Search characters" />
+                    <button id="clear-search" class="clear-btn" aria-label="Clear search">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Character Tab Content -->
+            <div id="character-container" class="character-container">
+                <div id="all-tab" class="character-tab active" role="tabpanel" aria-labelledby="all-tab">
+                    <!-- Empty state for characters -->
+                    <div class="empty-state" id="empty-characters-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-users-slash" aria-hidden="true"></i>
+                        </div>
+                        <h2>No Characters Found</h2>
+                        <p>Start by creating your own character</p>
+                        <button id="empty-create-character-btn" class="primary-btn">Create a Character</button>
+                    </div>
+                    
+                    <!-- Character Grid -->
+                    <div class="character-grid" id="all-characters-grid">
+                        <!-- Character cards will be added here via JS -->
+                    </div>
+                </div>
+                
+                <div id="popular-tab" class="character-tab" role="tabpanel" aria-labelledby="popular-tab">
+                    <div class="character-grid" id="popular-characters-grid">
+                        <!-- Popular character cards will be added here via JS -->
+                    </div>
+                </div>
+                
+                <div id="recent-tab" class="character-tab" role="tabpanel" aria-labelledby="recent-tab">
+                    <div class="character-grid" id="recent-characters-grid">
+                        <!-- Recent character cards will be added here via JS -->
+                    </div>
+                </div>
+                
+                <div id="mycharacters-tab" class="character-tab" role="tabpanel" aria-labelledby="mycharacters-tab">
+                    <div class="character-grid" id="my-characters-grid">
+                        <!-- My character cards will be added here via JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Character Card Template -->
+            <template id="character-card-template">
+                <div class="character-card">
+                    <div class="character-image-container">
+                        <img class="character-image" src="" alt="Character" />
+                        <div class="character-actions">
+                            <button class="action-btn chat-btn" aria-label="Chat with character">
+                                <i class="fas fa-comment" aria-hidden="true"></i>
+                            </button>
+                            <button class="action-btn info-btn" aria-label="Character info">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            </button>
+                            <button class="action-btn favorite-btn" aria-label="Add to favorites">
+                                <i class="far fa-heart" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="character-info">
+                        <h3 class="character-name"></h3>
+                        <p class="character-description"></p>
+                        <div class="character-tags"></div>
+                    </div>
+                </div>
+            </template>
+        </main>
+
+        <!-- Character Detail Modal -->
+        <div id="character-detail-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="character-detail-title">
+            <div class="modal-content character-detail">
+                <header class="modal-header">
+                    <h3 id="character-detail-title">Character Details</h3>
+                    <button id="close-character-detail" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="character-detail-header">
+                        <div class="character-detail-avatar">
+                            <img id="detail-avatar" src="" alt="Character avatar" />
+                        </div>
+                        <div class="character-detail-info">
+                            <h2 id="detail-name"></h2>
+                            <p id="detail-creator"></p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-comment" aria-hidden="true"></i>
+                                    <span id="detail-chats-count">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart" aria-hidden="true"></i>
+                                    <span id="detail-likes-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-detail-section">
+                        <h4>About</h4>
+                        <p id="detail-description"></p>
+                    </div>
+                    
+                    <div class="character-detail-section">
+                        <h4>Personality</h4>
+                        <p id="detail-personality"></p>
+                    </div>
+                    
+                    <div class="character-detail-section">
+                        <h4>Example Conversation</h4>
+                        <div class="example-chat" id="detail-example-chat">
+                            <!-- Example messages will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="character-detail-section">
+                        <h4>Tags</h4>
+                        <div class="character-tags" id="detail-tags">
+                            <!-- Tags will be added here -->
+                        </div>
+                    </div>
+                </div>
+                <footer class="modal-footer">
+                    <button id="start-chat-with-character" class="primary-btn">
+                        <i class="fas fa-comment" aria-hidden="true"></i>
+                        Start Chat
+                    </button>
+                    <button id="edit-character" class="secondary-btn">
+                        <i class="fas fa-edit" aria-hidden="true"></i>
+                        Edit
+                    </button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Character Menu -->
+        <div id="character-menu" class="popup-menu hidden" role="menu" aria-label="Character options">
+            <ul role="menuitem">
+                <li id="filter-characters"><i class="fas fa-filter" aria-hidden="true"></i> Filter Characters</li>
+                <li id="sort-characters"><i class="fas fa-sort" aria-hidden="true"></i> Sort By</li>
+                <li id="import-character"><i class="fas fa-file-import" aria-hidden="true"></i> Import Character</li>
+                <li id="dark-mode-toggle-menu"><i class="fas fa-moon" aria-hidden="true"></i> Dark Mode</li>
+                <li id="close-character-menu"><i class="fas fa-times" aria-hidden="true"></i> Close</li>
+            </ul>
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="filter-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="filter-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="filter-title">Filter Characters</h3>
+                    <button id="close-filter-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="filter-section">
+                        <h4>Categories</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="filter-roleplay" />
+                                <span>Roleplay</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="filter-assistant" />
+                                <span>Assistant</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="filter-companion" />
+                                <span>Companion</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="filter-historical" />
+                                <span>Historical</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="filter-fictional" />
+                                <span>Fictional</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Content Rating</h4>
+                        <div class="radio-group" role="radiogroup">
+                            <label class="radio-option">
+                                <input type="radio" name="content-rating" value="all" checked />
+                                <span>All</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="content-rating" value="sfw" />
+                                <span>SFW Only</span>
+                            </label>
+                            <label class="radio-option nsfw-option">
+                                <input type="radio" name="content-rating" value="nsfw" id="nsfw-filter-option" />
+                                <span>NSFW Included</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <footer class="modal-footer">
+                    <button id="reset-filters" class="secondary-btn">Reset</button>
+                    <button id="apply-filters" class="primary-btn">Apply Filters</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Sort Modal -->
+        <div id="sort-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="sort-title">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3 id="sort-title">Sort Characters</h3>
+                    <button id="close-sort-modal" class="close-btn" aria-label="Close modal">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </header>
+                <div class="modal-body">
+                    <div class="radio-group" role="radiogroup">
+                        <label class="radio-option">
+                            <input type="radio" name="sort-option" value="newest" checked />
+                            <span>Newest First</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="sort-option" value="oldest" />
+                            <span>Oldest First</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="sort-option" value="popularity" />
+                            <span>Most Popular</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="sort-option" value="alphabetical" />
+                            <span>Alphabetical (A-Z)</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="sort-option" value="alphabetical-desc" />
+                            <span>Alphabetical (Z-A)</span>
+                        </label>
+                    </div>
+                </div>
+                <footer class="modal-footer">
+                    <button id="apply-sort" class="primary-btn">Apply</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="nav-item">
+                <i class="fas fa-comment" aria-hidden="true"></i>
+                <span>Chats</span>
+            </a>
+            <a href="character.html" class="nav-item active" aria-current="page">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <span>Characters</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-gear" aria-hidden="true"></i>
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="overlay hidden" aria-hidden="true">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="notification-toast" class="toast hidden" role="alert" aria-live="polite"></div>
+
+        <div id="overlay" class="overlay hidden" aria-hidden="true"></div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/navigation.js"></script>
+    <script type="module" src="js/character.js"></script>
+</body>
+</html>
